@@ -95,8 +95,6 @@ string switcher2(string s, string a, string b) {
 	auto mark = [](string& s, int i, int M, int j, int N) {
 		for (int k = 0; k<M; ++k) { s[i + k] = '\0'; }
 		for (int k = 0; k<N; ++k) { s[j + k] = '\0'; }
-		//if (M == 0) s.insert(s.begin(), 0);
-		//if (N == 0) s.insert(s.end()-1, 0);
 	};
 
 	int i = 0, j = L - 1, count = 0;

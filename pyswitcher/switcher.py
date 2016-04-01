@@ -168,7 +168,7 @@ def switcher2(s, a, b):
             O(N) where N is length of s
     """
     L, M, N, MI = len(s), len(a), len(b), len(s) >> 1
-    if L < M + N or M == 0 or N == 0 or a == b or (M > MI or N > L - MI):
+    if L < M + N or M == 0 or N == 0 or a == b or M > MI or N > L - MI:
         return s
 
     if isinstance(s, str):
@@ -244,7 +244,7 @@ def switcher2_recursive(s, a, b):
             j -= 1
         return __switcher2_recursive(s, a, b, i, j, iend, ma, mb)
 
-    if L < M + N or M == 0 or N == 0 or a == b or (M > MI or N > L - MI):
+    if L < M + N or M == 0 or N == 0 or a == b or M > MI or N > L - MI:
         return s
     else:
         try:

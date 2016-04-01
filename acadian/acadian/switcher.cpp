@@ -1,7 +1,4 @@
-#include <vector>
-#include <string>
-#include <assert.h>
-#include <iostream>
+#include "switcher.hpp"
 
 using namespace std;
 
@@ -110,7 +107,7 @@ string switcher2(string s, string a, string b) {
             i += M - 1;
         }
     }
-    string ns { "" };
+    string ns;
     for (int i = 0; i<L; ++i) {
         if (s[i] == 0) {
             i += i<MI ? M-1 : N-1;
@@ -122,6 +119,7 @@ string switcher2(string s, string a, string b) {
     return ns;
 }
 
+/*
 vector<vector<string> > vts = {
     { "", "", "", "" },
     { "", "a", "e","" },
@@ -145,7 +143,7 @@ vector<vector<string> > vts = {
 
 int main() {
     for (auto t : vts) {
-        //cout << t[0] << "," << t[1] << "," << t[2] << "," << t[3] << endl;
+        cout << t[0] << "," << t[1] << "," << t[2] << "," << t[3] << endl;
         if (t[1].size() == 1 && t[2].size() == 1) {
             assert(switcher(t[0], t[1][0], t[2][0]) == t[3]);
             assert(switcher_recursive(t[0], t[1][0], t[2][0]) == t[3]);
@@ -155,3 +153,4 @@ int main() {
     }
     return 0;
 }
+*/

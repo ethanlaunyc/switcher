@@ -4,13 +4,13 @@ In setUp function, the program generates strings with pattern a in first
 half of string s, and pattern b in second half In each string, the number 
 of pattern is between 1 to PATTERN_MAXNUM(=500). These strings(s) and 
 patterns(a,b) are stored in list args1 and args2. Then it calls a simple 
-implementation of switching algorithm called 'naive_switcher' to calculate 
-the results and save to lists res1 and res2. 'naive_switcher' uses python 
+implementation of switching algorithm called 'native_switcher' to calculate 
+the results and save to lists res1 and res2. 'native_switcher' uses python 
 builtin string function, so it is very fast and simple.
 
 In the test_* functions, different functions from switcher.py will be 
 invoked with argument stored in args1 args2. The results returned will 
-be compared with the results of 'naive_switcher'. If there is any 
+be compared with the results of 'native_switcher'. If there is any 
 difference, it means the function from switcher.py has bug.
 
 The following is what I get when running in my machine:
@@ -68,10 +68,9 @@ def generate_str(a,b):
         r2 = h + r2
     if len(r2) >len(r1):
         r2 = r2[len(r2)-len(r1):]
+    return r1 + r2
 
-    return r1 + r2 ## before switching
-
-def naive_switcher(s, a, b):
+def native_switcher(s, a, b):
     L, M, N, MI = len(s), len(a), len(b), len(s) >> 1
     if L < M + N or M == 0 or N == 0 or a == b or (M > MI or N > L - MI):
         return s
@@ -90,34 +89,35 @@ class SwitcherTest(unittest.TestCase):
         for c in range(TESTCASE_NUM):
             i = randint(0,50)%len(RSTR)
             j = randint(0,100)%len(RSTR)
-            P1 = RSTR[i:i+randint(0,5)]
-            P2 = RSTR[j:j+randint(0,10)]
+            P1, P2 = RSTR[i:i+1], RSTR[j:j+1]
+            s = generate_str(P1, P2)
+            self.args1.append((s, P1, P2))
+
+            P1, P2 = RSTR[i:i+randint(0,5)], RSTR[j:j+randint(0,10)]
             s = generate_str(P1,P2)
-            self.args1.append((s,P1,P2))
+            self.args2.append((s,P1,P2))
 
-            P3, P4 = RSTR[i:i+1], RSTR[j:j+1]
-            s = generate_str(P3,P4)
-            self.args2.append((s,P3,P4))
         for arg in self.args1:
-            self.res1.append(naive_switcher(arg[0],arg[1],arg[2]))
+            self.res1.append(native_switcher(arg[0],arg[1],arg[2]))
         for arg in self.args2:
-            self.res2.append(naive_switcher(arg[0],arg[1],arg[2]))
-
-    def test_switcher2(self):
-        for i,arg in enumerate(self.args1):
-            self.assertEqual(self.res1[i], switcher2(arg[0],arg[1],arg[2]))
-
-    def test_switcher2_recursive(self):
-        for i,arg in enumerate(self.args1):
-            self.assertEqual(self.res1[i], switcher2_recursive(arg[0],arg[1],arg[2]))
+            self.res2.append(native_switcher(arg[0],arg[1],arg[2]))
 
     def test_switcher(self):
-        for i,arg in enumerate(self.args2):
-            self.assertEqual(self.res2[i], switcher(arg[0],arg[1],arg[2]))
+        for i,arg in enumerate(self.args1):
+            self.assertEqual(self.res1[i], switcher(arg[0],arg[1],arg[2]))
 
     def test_switcher_recursive(self):
+        for i,arg in enumerate(self.args1):
+            self.assertEqual(self.res1[i], switcher_recursive(arg[0],arg[1],arg[2]))
+
+    def test_switcher2(self):
         for i,arg in enumerate(self.args2):
-            self.assertEqual(self.res2[i], switcher_recursive(arg[0],arg[1],arg[2]))
+            self.assertEqual(self.res2[i], switcher2(arg[0],arg[1],arg[2]))
+
+    def test_switcher2_recursive(self):
+        for i,arg in enumerate(self.args2):
+            self.assertEqual(self.res2[i], switcher2_recursive(arg[0],arg[1],arg[2]))
+
 
 if __name__ == '__main__':
     unittest.main()

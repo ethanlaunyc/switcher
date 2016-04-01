@@ -162,7 +162,10 @@ def switcher2(s, a, b):
 
     Complexity:
         Time:
-            O(N*M) where N is len(s), M is max(len(a), len(b))
+            O(N*M) where N is len(s), M is max(len(a), len(b)). Although I can use some linear match
+            algorithm like KMP to make this O(N), it requires string preprocessing and the constant
+            coefficient will be great. If distribution of characters appearing in the string is 
+            uniform, the brute force algorithm is the best, like the implementation in strstr().
             Expected/average time complexity is O(N)
         Space:
             O(N) where N is length of s
@@ -193,7 +196,7 @@ def switcher2(s, a, b):
             k += (M if k < MI else N) - 1
             ns += (b if k < MI else a)
         else:
-            ns.append(s[k])
+            ns.append(s[k]) # Space O(N)
         k += 1
     return ''.join(ns)
 
@@ -211,7 +214,7 @@ def switcher2_recursive(s, a, b):
 
     Complexity:
         Time:
-            O(N*M) where N is len(s), M is max(len(a), len(b))
+            O(N*M) where N is len(s), M is max(len(a), len(b)), - the same as switcher2(...)
             Expected/average time complexity is O(N)
         Space:
             O(N) where N is length of s
@@ -233,7 +236,7 @@ def switcher2_recursive(s, a, b):
         elif not ma and mb:
             i += 1
         elif ma and mb:
-            s = s[:i] + b + s[i + M:j] + a + s[j + N:L]
+            s = s[:i] + b + s[i + M:j] + a + s[j + N:L] #Space O(N)
             iend += N - M
             i += N
             j -= M
@@ -255,3 +258,5 @@ def switcher2_recursive(s, a, b):
             print "Stackoverflow:%s. Please use iterative version!" % str(e)
             print "s={},a={},b={}".format(''.join(s), ''.join(a), ''.join(b))
             return None
+
+

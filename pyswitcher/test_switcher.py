@@ -2,12 +2,10 @@ import unittest as ut
 from switcher import *
 from random import *
 from collections import deque
-import datetime as dt
 
 
 def randomchar():
-    #return chr(randint(0, 58) + ord('A'))
-    return chr(randint(0, 25) + ord('a'))
+    return chr(randint(0, 25) + ord('a')) if randint(0,10)&1 else chr(randint(0, 58) + ord('A'))
 
 RSTR = ''.join([randomchar() for i in range(100)])
 
@@ -58,7 +56,7 @@ class stkwitcherTest(ut.TestCase):
         self.args2 = []
         self.res1 = []
         self.res2 = []
-        for c in range(1000):
+        for c in range(2000):
             i = randint(0,50)%len(RSTR)
             j = randint(0,100)%len(RSTR)
             P1 = RSTR[i:i+randint(0,5)]

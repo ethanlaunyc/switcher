@@ -232,25 +232,21 @@ def switcher2_recursive(s, a, b):
         mb = mb or startswith(s, j, L, b)
         if not ma and not mb:
             nj -= 1
-            while nj >= iend and s[nj] != b[0]:
-                nj -= 1
             ni += 1
-            while ni < iend and s[ni] != a[0]:
-                ni += 1
         elif ma and not mb:
             nj -= 1
-            while nj >= iend and s[nj] != b[0]:
-                nj -= 1
         elif not ma and mb:
             ni += 1
-            while ni < iend and s[ni] != a[0]:
-                ni += 1
         elif ma and mb:
             s = s[:i] + b + s[i + M:j] + a + s[j + N:L]
             iend += N - M
             ni += N
             nj -= M
             ma = mb = False
+        while ni < iend and s[ni] != a[0]:
+            ni += 1
+        while nj >= iend and s[nj] != b[0]:
+            nj -= 1
         return __switcher2_recursive(s, a, b, ni, nj, iend, ma, mb, sd + 1)
 
     if L < M + N or M == 0 or N == 0 or a == b or (M > MI or N > L - MI):

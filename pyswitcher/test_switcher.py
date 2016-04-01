@@ -1,8 +1,9 @@
 import unittest as ut
 from switcher import *
-from random import *
+from random import seed, randint
 from collections import deque
 
+seed()
 
 def randomchar():
     return chr(randint(0, 25) + ord('a')) if randint(0,10)&1 else chr(randint(0, 58) + ord('A'))
@@ -12,7 +13,7 @@ RSTR = ''.join([randomchar() for i in range(100)])
 def generate_str(a,b):
     que = deque()
     stk = []
-    for i in range(randint(1,300)):
+    for i in range(randint(1,500)):
         m1 = randint(0, len(RSTR))
         que.append(RSTR[m1:m1 + randint(0, 5)])
         m2 = randint(0, 10000)%len(RSTR)
@@ -50,13 +51,14 @@ def naive_switcher(s, a, b):
     s_r, a_r, b_r = s2[::-1], a[::-1], b[::-1]
     return s1.replace(a,b,c) + s_r.replace(b_r,a_r,c)[::-1]
     
-class stkwitcherTest(ut.TestCase):
+class SwitcherTest(ut.TestCase):
+
     def setUp(self):
         self.args1 = []
         self.args2 = []
         self.res1 = []
         self.res2 = []
-        for c in range(2000):
+        for c in range(1000):
             i = randint(0,50)%len(RSTR)
             j = randint(0,100)%len(RSTR)
             P1 = RSTR[i:i+randint(0,5)]

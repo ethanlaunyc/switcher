@@ -43,7 +43,6 @@ algorithm will have different implementation for different languages.
 - https://gist.github.com/melpomene/2359537
 """
 
-
 __all__ = ['switcher', 'switcher2',
            'switcher_recursive', 'switcher2_recursive']
 
@@ -99,27 +98,25 @@ def switcher_recursive(s, a, b):
     def __switcher_recursive(s, a, b, i, j):
         if i >= MI or j < MI:
             return s
-        ni, nj = i, j
+        ni, nj = i+1, j-1
         if s[i] == a and s[j] != b:
-            nj -= 1
+            ni -= 1
         elif s[i] != a and s[j] == b:
-            ni += 1
+            nj += 1
         elif s[i] == a and s[j] == b:
             s[i], s[j] = s[j], s[i]
-            ni += 1
-            nj -= 1
-        else:
-            ni += 1
-            nj -= 1
         while nj >= MI and s[nj] != b:
             nj -= 1
         while ni < MI and s[ni] != a:
             ni += 1
         return __switcher_recursive(s, a, b, ni, nj)
+
     if L < 2 or M != 1 or N != 1 or a == b:
         return s
     else:
         try:
+            import sys
+            sys.setrecursionlimit(10**6)
             return ''.join(__switcher_recursive(list(s), a, b, 0, L - 1))
         except RuntimeError, e:
             print "Stackoverflow: %s. Please use iterative version!" % str(e)
@@ -221,39 +218,39 @@ def switcher2_recursive(s, a, b):
     """
     L, M, N, MI = len(s), len(a), len(b), len(s) >> 1
 
-    def __switcher2_recursive(s, a, b, i, j, iend, ma, mb, sd):
+    def __switcher2_recursive(s, a, b, i, j, iend, ma, mb):
         if i >= iend or j < iend:
             return list(s)
-        ni, nj = i, j
         if isinstance(s, str):
             s, a, b = list(s), list(a), list(b)
 
         ma = ma or startswith(s, i, iend, a)
         mb = mb or startswith(s, j, L, b)
         if not ma and not mb:
-            nj -= 1
-            ni += 1
+            j, i = j-1, i+1
         elif ma and not mb:
-            nj -= 1
+            j -= 1
         elif not ma and mb:
-            ni += 1
+            i += 1
         elif ma and mb:
             s = s[:i] + b + s[i + M:j] + a + s[j + N:L]
             iend += N - M
-            ni += N
-            nj -= M
+            i += N
+            j -= M
             ma = mb = False
-        while ni < iend and s[ni] != a[0]:
-            ni += 1
-        while nj >= iend and s[nj] != b[0]:
-            nj -= 1
-        return __switcher2_recursive(s, a, b, ni, nj, iend, ma, mb, sd + 1)
+        while i < iend and s[i] != a[0]:
+            i += 1
+        while j >= iend and s[j] != b[0]:
+            j -= 1
+        return __switcher2_recursive(s, a, b, i, j, iend, ma, mb)
 
     if L < M + N or M == 0 or N == 0 or a == b or (M > MI or N > L - MI):
         return s
     else:
         try:
-            return ''.join(__switcher2_recursive(s, a, b, 0, L - N, MI, False, False, 0))
+            import sys
+            sys.setrecursionlimit(10**6)
+            return ''.join(__switcher2_recursive(s, a, b, 0, L - N, MI, False, False))
         except RuntimeError, e:
             print "Stackoverflow:%s. Please use iterative version!" % str(e)
             print "s={},a={},b={}".format(''.join(s), ''.join(a), ''.join(b))

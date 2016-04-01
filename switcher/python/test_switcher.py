@@ -62,7 +62,7 @@ import switcher as SW
 try:
     import uswitcher as USW
 except:
-    if sys.argv[1] == 'UswitcherTest':
+    if len(sys.argv)>1 and sys.argv[1] == 'UswitcherTest':
         print "uswitcher is not installed. Exit!"
         sys.exit(0)
 
@@ -73,6 +73,7 @@ TESTCASE_NUM = 4000
 def randomchar():
     return chr(randint(0, 25) + ord('a')) if randint(0,10)&1 else chr(randint(0, 58) + ord('A'))
 
+now = datetime.now
 seed()
 RSTR = ''.join([randomchar() for i in range(100)])
 
@@ -157,37 +158,37 @@ class SwitcherTest(unittest.TestCase):
         if len(args1) > 0:
             return
         print "[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         run_native_switcher()
-        print "[-]setUp is done.({:.2f}s)".format((datetime.now()-start).total_seconds())
+        print "[-]setUp is done.({:.2f}s)".format((now()-start).total_seconds())
 
     def test_switcher(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args1):
             self.assertEqual(res1[i], SW.switcher(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
     def test_switcher_recursive(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args1):
             self.assertEqual(res1[i], SW.switcher_recursive(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
     def test_switcher2(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args2):
             self.assertEqual(res2[i], SW.switcher2(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
     def test_switcher2_recursive(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args2):
             self.assertEqual(res2[i], SW.switcher2_recursive(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
 
 
@@ -197,37 +198,37 @@ class UswitcherTest(unittest.TestCase):
         if len(args1) > 0:
             return
         print "[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         run_native_switcher()
-        print "[-]setUp is done.({:.2f}s)".format((datetime.now()-start).total_seconds())
+        print "[-]setUp is done.({:.2f}s)".format((now()-start).total_seconds())
 
     def test_uswitcher(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args1):
             self.assertEqual(res1[i], USW.switcher(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
     def test_uswitcher_recursive(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args1):
             self.assertEqual(res1[i], USW.switcher_recursive(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
     def test_uswitcher2(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args2):
             self.assertEqual(res2[i], USW.switcher2(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
     def test_uswitcher2_recursive(self):
         print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
-        start = datetime.now()
+        start = now()
         for i,arg in enumerate(args2):
             self.assertEqual(res2[i], USW.switcher2_recursive(arg[0],arg[1],arg[2]))
-        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).total_seconds())
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (now()-start).total_seconds())
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:

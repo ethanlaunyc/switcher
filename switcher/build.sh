@@ -1,3 +1,8 @@
+#!/bin/bash
+#
+# To build cplusplus switcher to uswitcher python module
+#
+
 if [ ! -d "cplusplus_python" ]; then
     exit
 fi

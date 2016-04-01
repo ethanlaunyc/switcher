@@ -1,7 +1,26 @@
-import unittest as ut
+""" To test functions in switcher.py
+
+In setUp function, the program generates strings with pattern a in first 
+half of string s, and pattern b in second half In each string, the number 
+of pattern is between 1 to PATTERN_MAXNUM(=500). These strings(s) and 
+patterns(a,b) are stored in list args1 and args2. Then it calls a simple 
+implementation of switching algorithm called 'naive_switcher' to calculate 
+the results and save to lists res1 and res2. 'naive_switcher' uses python 
+builtin string function, so it is very fast and simple.
+
+In the test_* functions, different functions from switcher.py will be 
+invoked with argument stored in args1 args2. The results returned will 
+be compared with the results of 'naive_switcher'. If there is any 
+difference, it means the function from switcher.py has bug.
+"""
+import unittest
 from switcher import *
 from random import seed, randint
 from collections import deque
+
+
+PATTERN_MAXNUM = 500
+TESTCASE_NUM = 1000
 
 seed()
 
@@ -13,7 +32,7 @@ RSTR = ''.join([randomchar() for i in range(100)])
 def generate_str(a,b):
     que = deque()
     stk = []
-    for i in range(randint(1,500)):
+    for i in range(randint(1,PATTERN_MAXNUM)):
         m1 = randint(0, len(RSTR))
         que.append(RSTR[m1:m1 + randint(0, 5)])
         m2 = randint(0, 10000)%len(RSTR)
@@ -51,14 +70,14 @@ def naive_switcher(s, a, b):
     s_r, a_r, b_r = s2[::-1], a[::-1], b[::-1]
     return s1.replace(a,b,c) + s_r.replace(b_r,a_r,c)[::-1]
     
-class SwitcherTest(ut.TestCase):
+class SwitcherTest(unittest.TestCase):
 
     def setUp(self):
         self.args1 = []
         self.args2 = []
         self.res1 = []
         self.res2 = []
-        for c in range(1000):
+        for c in range(TESTCASE_NUM):
             i = randint(0,50)%len(RSTR)
             j = randint(0,100)%len(RSTR)
             P1 = RSTR[i:i+randint(0,5)]
@@ -91,7 +110,7 @@ class SwitcherTest(ut.TestCase):
             self.assertEqual(self.res2[i], switcher_recursive(arg[0],arg[1],arg[2]))
 
 if __name__ == '__main__':
-    ut.main()
+    unittest.main()
 
 
 

@@ -12,6 +12,16 @@ In the test_* functions, different functions from switcher.py will be
 invoked with argument stored in args1 args2. The results returned will 
 be compared with the results of 'naive_switcher'. If there is any 
 difference, it means the function from switcher.py has bug.
+
+The following is what I get when running in my machine:
+
+$ python test_switcher.py
+....
+----------------------------------------------------------------------
+Ran 4 tests in 36.320s
+
+OK
+
 """
 import unittest
 from switcher import *

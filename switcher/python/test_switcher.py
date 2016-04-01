@@ -6,7 +6,7 @@ of pattern is between 1 to PATTERN_MAXNUM(=500). These strings(s) and
 patterns(a,b) are stored in list args1 and args2. Then it calls a simple 
 implementation of switching algorithm called 'native_switcher' to calculate 
 the results and save to lists res1 and res2. 'native_switcher' uses python 
-builtin string function, so it is very fast and simple.
+builtin string functions, so it is very fast and simple.
 
 In the test_* functions, different functions from switcher.py will be 
 invoked with argument stored in args1 args2. The results returned will 
@@ -15,23 +15,53 @@ difference, it means the function from switcher.py has bug.
 
 The following is what I get when running in my machine:
 
-$ python test_switcher.py
-....
-----------------------------------------------------------------------
-Ran 4 tests in 36.320s
-
-OK
+    $python test_switcher.py
+    Testing 'switcher' and 'uswitcher' with 4000 test cases for each function.
+    ----------------------------------------------------------------------
+    [+]setUp is started...
+    [-]setUp is done.(7.56s)
+    
+    [+]test_switcher is started...
+    [-]test_switcher is done.(8.83s)
+    .
+    [+]test_switcher2 is started...
+    [-]test_switcher2 is done.(7.51s)
+    .
+    [+]test_switcher2_recursive is started...
+    [-]test_switcher2_recursive is done.(1.43s)
+    .
+    [+]test_switcher_recursive is started...
+    [-]test_switcher_recursive is done.(3.61s)
+    .
+    [+]test_uswitcher is started...
+    [-]test_uswitcher is done.(0.33s)
+    .
+    [+]test_uswitcher2 is started...
+    [-]test_uswitcher2 is done.(0.86s)
+    .
+    [+]test_uswitcher2_recursive is started...
+    [-]test_uswitcher2_recursive is done.(3.20s)
+    .
+    [+]test_uswitcher_recursive is started...
+    [-]test_uswitcher_recursive is done.(0.27s)
+    .
+    ----------------------------------------------------------------------
+    Ran 8 tests in 53.362s
+    
+    OK
 
 """
+import sys
 import unittest
-from switcher import *
+import switcher as SW
+import uswitcher as USW
 from random import seed, randint
 from collections import deque
-import sys
+from datetime import datetime
 
 
 PATTERN_MAXNUM = 500
-TESTCASE_NUM = 2000
+TESTCASE_NUM = 4000
 
 seed()
 
@@ -81,12 +111,21 @@ def native_switcher(s, a, b):
     return s1.replace(a,b,c) + s_r.replace(b_r,a_r,c)[::-1]
 
 class SwitcherTest(unittest.TestCase):
+    args1, args2, res1, res2 = [], [], [], []
 
     def setUp(self):
-        self.args1 = []
-        self.args2 = []
-        self.res1 = []
-        self.res2 = []
+        """Prepare arguments and results for testing
+
+        self.args1 stroes arguments as (s,a,b) where s is sring, a and b are length-1 char
+        self.args2 stroes arguments as (s,a,b) where s is sring, a and b are strings of arbitrary length
+
+        self.res1 stores results of switcher algorithm 1
+        self.res2 stores results of switcher algorithm 2
+        """
+        if len(self.args1) > 0:
+            return
+        print "[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
         for c in range(TESTCASE_NUM):
             i = randint(0,50)%len(RSTR)
             j = randint(0,100)%len(RSTR)
@@ -102,27 +141,68 @@ class SwitcherTest(unittest.TestCase):
             self.res1.append(native_switcher(arg[0],arg[1],arg[2]))
         for arg in self.args2:
             self.res2.append(native_switcher(arg[0],arg[1],arg[2]))
+        print "[-]setUp is done.({:.2f}s)".format((datetime.now()-start).microseconds/1e5)
 
     def test_switcher(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
         for i,arg in enumerate(self.args1):
-            self.assertEqual(self.res1[i], switcher(arg[0],arg[1],arg[2]))
+            self.assertEqual(self.res1[i], SW.switcher(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
 
     def test_switcher_recursive(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
         for i,arg in enumerate(self.args1):
-            self.assertEqual(self.res1[i], switcher_recursive(arg[0],arg[1],arg[2]))
+            self.assertEqual(self.res1[i], SW.switcher_recursive(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
 
     def test_switcher2(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
         for i,arg in enumerate(self.args2):
-            self.assertEqual(self.res2[i], switcher2(arg[0],arg[1],arg[2]))
+            self.assertEqual(self.res2[i], SW.switcher2(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
 
     def test_switcher2_recursive(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
         for i,arg in enumerate(self.args2):
-            self.assertEqual(self.res2[i], switcher2_recursive(arg[0],arg[1],arg[2]))
+            self.assertEqual(self.res2[i], SW.switcher2_recursive(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
+
+    def test_uswitcher(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
+        for i,arg in enumerate(self.args1):
+            self.assertEqual(self.res1[i], USW.switcher(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
+
+    def test_uswitcher_recursive(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
+        for i,arg in enumerate(self.args1):
+            self.assertEqual(self.res1[i], USW.switcher_recursive(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
+
+    def test_uswitcher2(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
+        for i,arg in enumerate(self.args2):
+            self.assertEqual(self.res2[i], USW.switcher2(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
+
+    def test_uswitcher2_recursive(self):
+        print "\n[+]{} is started...".format(sys._getframe().f_code.co_name)
+        start = datetime.now()
+        for i,arg in enumerate(self.args2):
+            self.assertEqual(self.res2[i], USW.switcher2_recursive(arg[0],arg[1],arg[2]))
+        print "[-]{} is done.({:.2f}s)".format(sys._getframe().f_code.co_name, (datetime.now()-start).microseconds/1e5)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) >1 and sys.argv[1].lower()=='cpp':
-        from uswitcher import *
+    print "Testing 'switcher' and 'uswitcher' with {} test cases for each function.".format(TESTCASE_NUM)
+    print '----------------------------------------------------------------------'
     unittest.main()
 
 
